@@ -3,14 +3,20 @@
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "license": "MIT",  
+    
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "razorpay/razorpay": "^2.6",
+        "ext-zip": "^1.15", 
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.17",
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -25,7 +31,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helper/CommonFunction.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
