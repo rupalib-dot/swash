@@ -16,14 +16,14 @@ use DB;
 
 class CustomerController extends BaseController
 {
-	public function __construct() 
-	{ 
+	public function __construct()
+	{
 	}
-	
+
 	public function store(Request $request)
 	{
 		$error_message = 	[
-			'name.required' 	    	=> 'Full name should be required', 
+			'name.required' 	    	=> 'Full name should be required',
             'phone.required' 			=> 'Mobile number should be required',
 			'email.required' 			=> 'Email address should be required',
 			'password.required' 		=> 'Password should be required',
@@ -37,22 +37,21 @@ class CustomerController extends BaseController
             'password.min'         		=> 'Password minimun lenght :min characters',
             'password.max'        		=> 'Password maximum lenght :max characters',
             'password.regex'       		=> 'Password Should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character',
-            'same'                      => 'Confirm password did not matched',
-            'accepted'                  => 'Accept terms & conditions',
+            'same'                      => 'Confirm password did not matched'
 		];
 
 		$rules = [
 			'name' 	    		=> 'required|min:3|max:30',
 			'phone' 			=> 'required|digits:10|unique:users,phone',
-			'email' 			=> 'required|max:50|unique:users,email|regex:^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^', 
+			'email' 			=> 'required|max:50|unique:users,email|regex:^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^',
 			'password'			=> 'required|min:8|max:16|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'confirm_password'	=> 'required|required_with:password|same:password',
 		];
 
 		$validator = Validator::make($request->all(), $rules, $error_message);
 
-        if($validator->fails()){  
-            return $this->sendFailed(['errors' =>$validator->errors()], 200);       
+        if($validator->fails()){
+            return $this->sendFailed(['errors' =>$validator->errors()], 200);
         }
 
 		try
@@ -61,48 +60,35 @@ class CustomerController extends BaseController
 				$user = new User();
 				$user->fill($request->all());
 				$user->password = md5($request->password);
-				$user->email_status = config('constant.MAIL_STATUS.UNVERIFIED');
-				$user->phone_status = config('constant.MAIL_STATUS.UNVERIFIED');
-				$user->user_code = strtoupper(substr($request->name, 0, 2)."-".rand(11111,99999));
-				$user->save(); 
-				$userId =$user->user_id;
-
-				$user_role = new UserRole;
-                $user_role->role_id = 3;
-                $user_role->user_id = $userId;
-                $user_role->save();
-
+                $user->role = 'client';
+                $user->status = 'active';
+				$user->save();
+				$userId =$user->id;
 				$otp = rand(1111,9999);
 				$details = array(
 					'name'         	=> $request->name,
 					'mobile' 		=> $request->phone,
-					'email' 		=> $request->email,   
+					'email' 		=> $request->email,
 					'password'      => $request->password,
-					'user_id'       => $userId,
+					'id'       => $userId,
 					'otp'			=> $otp,
-				);   
+				);
 				\Mail::to($request->email)->send(new \App\Mail\NewUserMail($details));
 
 			\DB::commit();
-			return $this->sendSuccess(['user_id' => $userId, 'otp' => $otp ], 'OTP sent on your mobile number');
+			return $this->sendSuccess(['id' => $userId, 'otp' => $otp, 'email' => $request->email ], 'OTP sent on your mobile number');
 		}
 		catch (\Throwable $e)
     	{
             \DB::rollback();
-    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);  
+    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);
     	}
 	}
 
-	public function update(Request $request, $user_id)
-	{ 
+	public function update(Request $request, $id)
+	{
 		$error_message = 	[
 			'name.required' 	    => 'Full name should be required',
-			//'gender.required' 	    => 'Gender should be required',
-			//'dob.required' 	        => 'DOB should be required',
-			//'country_id.required'   => 'Country should be required',
-			//'state_id.required'     => 'State should be required',
-			//'city_id.required' 	    => 'City should be required',
-			//'dob.required' 	        => 'DOB should be required',
             'phone.required' 	    => 'Mobile number should be required',
 			'email.required' 	    => 'Email address should be required',
 			'phone.unique' 		    => 'Mobile number already exist',
@@ -115,41 +101,36 @@ class CustomerController extends BaseController
 
 		$rules = [
 			'name' 	    => 'required|min:3|max:30',
-			'phone' 	=> 'required|digits:10|unique:users,phone,'.$user_id.',user_id',
-			'email' 	=> 'required|max:50|unique:users,email,'.$user_id.',user_id|regex:^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^',
-			//'gender' 	    => 'required',
-			//'country_id' 	    => 'required',
-			//'state_id' 	        => 'required',
-			//'city_id' 	        => 'required',
-			//'dob' 	        => 'required',
+			'phone' 	=> 'required|digits:10|unique:users,phone,'.$id.',id',
+			'email' 	=> 'required|max:50|unique:users,email,'.$id.',id|regex:^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^',
 		];
 
 		$validator = Validator::make($request->all(), $rules, $error_message);
 
         if($validator->fails()){
-            return $this->sendFailed(['errors' =>$validator->errors()], 200);       
+            return $this->sendFailed(['errors' =>$validator->errors()], 200);
         }
 
 		try
 		{
 			\DB::beginTransaction();
-				User::findOrfail($user_id)->update($request->all());
-				$user_data = new CustomerProfile(User::findOrfail($user_id));
+				User::findOrfail($id)->update($request->all());
+				$user_data = new CustomerProfile(User::findOrfail($id));
 			\DB::commit();
 			return $this->sendSuccess($user_data, 'Profile updated successfully');
 		}
 		catch (\Throwable $e)
     	{
             \DB::rollback();
-    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);  
+    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);
     	}
 	}
 
-	public function show($user_id)
+	public function show($id)
 	{
 		try
 		{
-			$user_data = User::find($user_id);
+			$user_data = User::find($id);
 			if(isset($user_data))
 			{
 				$user_data = new CustomerProfile($user_data);
@@ -157,12 +138,12 @@ class CustomerController extends BaseController
 			}
 			else
 			{
-				return $this->sendFailed('Unauthorized access',200);  
+				return $this->sendFailed('Unauthorized access',200);
 			}
 		}
 		catch (\Throwable $e)
     	{
-    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);  
+    		return $this->sendFailed($e->getMessage().' on line '.$e->getLine(), 400);
     	}
 	}
 }

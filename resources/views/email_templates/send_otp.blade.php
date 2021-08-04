@@ -14,7 +14,7 @@
 
 	<body>
 		<?php $emailAddress = base64_encode($details['email']);
-		$userid = base64_encode($details['user_id']);?>
+		$userid = base64_encode($details['id']);?>
 		<div style="max-width: 600px; margin:0 auto;">
 			<div style ="display:block; position:relative; padding:25px; background-color: #eef0f3">
 				<div style="display: block; position: relative;padding: 32px;background-color: #fff;border-radius: 10px;box-shadow: 0px 0px 10px #e2e2e2;">

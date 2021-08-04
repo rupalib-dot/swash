@@ -14,21 +14,20 @@ class Users extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
-            $table->string('image',100)->nullable();
-            $table->string('user_code',10)->nullable();
-            $table->string('name',30)->nullable();
-            $table->string('phone',20);
-            $table->string('email',50)->nullable(); 
-            $table->integer('email_status')->nullable();
-            $table->integer('phone_status')->nullable();  
-            $table->string('password',255)->nullable();
-            $table->softDeletes();
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->bigIncrements('id');
+            $table->string('role')->nullable();
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('photo')->nullable();
+            $table->boolean('verify')->nullable();
+            $table->string('status');
+            $table->string('token')->nullable();
+            $table->string('loyalty_points')->nullable();
+            $table->string('password');
+            $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -36,6 +35,6 @@ class Users extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('users');
     }
 }

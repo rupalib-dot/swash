@@ -17,10 +17,10 @@ class UserAuthentication
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->user_role->roles->role_name == 'ROLE_USER')
+        if(!session()->has('ADMIN_ID'))
         {
-            return $next($request);
+            return redirect('/')->withError('Failed', 'Unauthorized access');
         }
-        return redirect()->route('login')->withError('Failed', 'Unauthorized access');
+        return $next($request);
     }
 }

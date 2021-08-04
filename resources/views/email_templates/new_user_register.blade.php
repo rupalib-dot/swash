@@ -14,19 +14,19 @@
 
 	<body>
 		<?php $emailAddress = base64_encode($details['email']);
-		$userid = base64_encode($details['user_id']);?>
+		$userid = base64_encode($details['id']);?>
 		<div style="max-width: 600px; margin:0 auto;">
 			<div style ="display:block; position:relative; padding:25px; background-color: #eef0f3">
 				<div style="display: block; position: relative;padding: 32px;background-color: #fff;border-radius: 10px;box-shadow: 0px 0px 10px #e2e2e2;">
 					<p><strong>Dear {{$details['name']}}</strong></p>
-					<p>You have received this message because your email address has been registerd with "Swash" plateform. Verify yourself and confirm your email by using below otp.</p> 
+					<p>You have received this message because your email address has been registerd with "Swash" plateform. Verify yourself and confirm your email by using below otp.</p>
 					<p style="text-align: center;">Use below given otp to reset your password </p>
 					<p style="text-align: center;">OTP:- {{$details['otp']}}</p>
 					<p>If it wasn't you who submitted your email address in the first place, we apologies for the error.</p>
 					<p>Please ignore this email. You will not receive any further email from us.</p>
 					<p style="padding-top: 20px;">Kind Regards,</p>
 					<p><b>Swash Team</b></p>
-				</div> 
+				</div>
 			</div>
 		</div>
 	</body>
