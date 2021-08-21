@@ -10,6 +10,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\BlackdateController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\BookingController;
 
 Route::get('/', [LoginController::class, 'loginPage'])->name('login');
 Route::get('login', [LoginController::class, 'loginPage'])->name('login');
@@ -37,11 +38,14 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         // Coupons
         Route::resource('coupons', CouponsController::class);
         Route::get('coupons-delete/{id}',[ CouponsController::class, 'delete'])->name('coupons.delete');
+        Route::get('referral-coupon',[ CouponsController::class, 'referralCoupon'])->name('referralCoupon');
 
         // Setting
         Route::get('application-settings',[ SettingController::class, 'settingPage'])->name('settingPage');
         Route::post('update-application-settings',[ SettingController::class, 'updateSetting'])->name('updateSetting');
 
+        // Booking
+        Route::resource('booking',BookingController::class);
 
     });
 });

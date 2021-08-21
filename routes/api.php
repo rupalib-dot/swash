@@ -38,7 +38,20 @@ Route::post('reset_password', [CommonController::class, 'reset_password']);
 Route::post('change_password', [CommonController::class, 'change_password']);
 Route::post('resend_otp', [CommonController::class, 'resend_otp']);
 Route::post('verify_account', [CommonController::class, 'verify_account']);
-
+Route::get('application_setting', [CommonController::class, 'application_setting']);
+Route::get('locations', [CommonController::class, 'locations']);
+Route::post('checkAbility', [CommonController::class, 'checkAbility']);
+Route::post('cartvalue', [CommonController::class, 'cartvalue']);
+Route::post('totlePrice', [CommonController::class, 'totlePrice']);
+Route::post('applyCoupon', [CommonController::class, 'applyCoupon']);
+Route::post('removeCart', [CommonController::class, 'removeCart']);
+Route::post('removecoupon', [CommonController::class, 'removecoupon']);
+Route::post('order', [CommonController::class, 'order']);
+Route::post('loyaltypoint', [CommonController::class, 'loyaltypoint']);
+Route::post('removeloyalti', [CommonController::class, 'removeloyalti']);
+Route::post('bookings', [CommonController::class, 'bookings']);
+Route::post('reschedule', [CommonController::class, 'reschedule']);
+Route::post('cancelrequest', [CommonController::class, 'cancelrequest']);
 
 
 

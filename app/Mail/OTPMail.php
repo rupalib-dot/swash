@@ -29,7 +29,7 @@ class OTPMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('New OTP') 
+        return $this->subject('Welcome to Swash Wash - Account Verification!')
         ->view('email_templates.send_otp');
     }
 }

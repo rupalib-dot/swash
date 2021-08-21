@@ -23,6 +23,7 @@ class Users extends Migration
             $table->boolean('verify')->nullable();
             $table->string('status');
             $table->string('token')->nullable();
+            $table->string('login_token')->nullable();
             $table->string('loyalty_points')->nullable();
             $table->string('password');
             $table->timestamps();

@@ -199,7 +199,7 @@
                         <li class="nav-item">
                             <a href="{{route('coupons.index')}}" class="nav-link {{ Request::is('coupons') ? 'active' : '' }}{{ Route::currentRouteName()== 'coupons.edit' ? 'active' : '' }}">
                                 <i class="nav-icon material-icons">
-                                    date_range
+                                    loyalty
                                 </i>
                                 <p class="text">All coupons list</p>
                             </a>
@@ -207,15 +207,32 @@
                         <li class="nav-item">
                             <a href="{{route('coupons.create')}}" class="nav-link {{ Request::is('coupons/create') ? 'active' : '' }}">
                                 <i class="nav-icon material-icons">
-                                    date_range
+                                    loyalty
                                 </i>
                                 <p class="text">Add coupon</p>
                             </a>
                         </li>
-
+                        <li class="nav-header">REFERRAL COUPONS</li>
+                        <li class="nav-item">
+                            <a href="{{route('referralCoupon')}}" class="nav-link {{Route::currentRouteName()== ('referralCoupon') ? 'active' : '' }}">
+                                <i class="nav-icon material-icons">
+                                    loyalty
+                                </i>
+                                <p class="text">Referral Coupons</p>
+                            </a>
+                        </li>
+                        <li class="nav-header">BOOKING DETAILS</li>
+                        <li class="nav-item">
+                            <a href="{{route('booking.index')}}" class="nav-link {{Route::currentRouteName()== ('booking') ? 'active' : '' }}">
+                                <i class="nav-icon material-icons">
+                                    loyalty
+                                </i>
+                                <p class="text"> All Booking</p>
+                            </a>
+                        </li>
                         <li class="nav-header">SETTING</li>
                         <li class="nav-item">
-                            <a href="{{ route('settingPage') }}" class="nav-link">
+                            <a href="{{ route('settingPage') }}" class="nav-link {{Route::currentRouteName()== ('settingPage') ? 'active' : '' }}">
                                 <i class="nav-icon material-icons">settings</i>
                                 <p class="text">Application Settings</p>
                             </a>

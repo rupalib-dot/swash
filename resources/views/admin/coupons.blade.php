@@ -19,15 +19,14 @@
                     <tr>
                         <td>{{ $coupon->id }} </td>
                         <td>{{ $coupon->name }} </td>
-                        <td><span style="max-width: 150px; display: block;">{{ $coupon->address }}</span> </td>
-                        <td>{{ $coupon->postcode }} </td>
-                        <td>{{ $coupon->capacity }} </td>
+                        <td>{{ $coupon->discount }}%</td>
+                        <td>{{ $coupon->valide_date }} </td>
                         <td> <a href="{{route('coupons.edit',base64_encode($coupon->id))}}" class="btn btn-primary btn-sm">View</a>
                             <a href="{{route('coupons.delete',base64_encode($coupon->id))}}" class="btn btn-danger btn-sm">Delete</a> </td>
                     </tr>
                     @endforeach
                 @else
-                <td valign="top" colspan="6" class="dataTables_empty">Records Not found</td>
+                <td valign="top" colspan="5" class="dataTables_empty">Records Not found</td>
                 @endif
 
 

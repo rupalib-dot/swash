@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Coupons;
+use App\Models\ReferralCoupon;
 
 class CouponsController extends Controller
 {
@@ -41,7 +42,7 @@ class CouponsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-			'name' => 'required',
+			'name' => 'required|min:6|max:6',
             'discount' 	=> 'required',
             'valide_date' 	    => 'required'
 		];
@@ -98,7 +99,7 @@ class CouponsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-			'name' => 'required',
+			'name' => 'required|min:6|max:6',
             'discount' 	=> 'required',
             'valide_date' 	    => 'required'
 		];
@@ -128,5 +129,12 @@ class CouponsController extends Controller
         $id = base64_decode($id);
         Coupons::destroy($id);
         return redirect()->route('coupons.index')->with('Success','Coupon successfully deleted');
+    }
+    public function referralCoupon(){
+        $title = "Referral Coupons";
+        $coupons = ReferralCoupon::OrderBy('id', 'DESC')->get();
+        $data = compact('title', 'coupons');
+        return view('admin.referral', $data);
+
     }
 }

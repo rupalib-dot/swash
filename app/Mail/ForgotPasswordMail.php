@@ -29,7 +29,7 @@ class ForgotPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Forgot Password') 
+        return $this->subject('Swash Wash - Password Reset!')
                     ->view('email_templates.forgot_password');
     }
 }

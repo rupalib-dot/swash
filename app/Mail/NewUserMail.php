@@ -29,7 +29,7 @@ class NewUserMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('New User Registration') 
+        return $this->subject('New User Registration')
                     ->view('email_templates.new_user_register');
     }
 }

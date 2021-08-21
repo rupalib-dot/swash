@@ -12,6 +12,7 @@ class User extends Model
         'role',
         'name',
         'token',
+        'login_token',
         'verify',
         'phone',
         'status',

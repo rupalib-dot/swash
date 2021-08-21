@@ -37,7 +37,7 @@
                     @method('put')
                     <div class="form-group col-md-12">
                         <label>Name:</label>
-                        <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase()" name="name" maxlength="6" value="{{ old('name', $coupon->name) }}" />
+                        <input type="text" class="form-control"  minlength="6" oninput="this.value = this.value.toUpperCase()" name="name" maxlength="6" value="{{ old('name', $coupon->name) }}" required />
                         @error('name')
                         <p class="text-danger">{{ $message }}</p>
                         @enderror

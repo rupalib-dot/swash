@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Validator;
 use App\Http\Controllers\ApiController\BaseController as BaseController;
 use App\Models\User;
-use App\Models\UserRole;
+use App\Models\ReferralCoupon;
 use App\Http\Resources\CustomerProfile;
 use Mail;
 use Hash;
@@ -53,15 +53,27 @@ class CustomerController extends BaseController
         if($validator->fails()){
             return $this->sendFailed(['errors' =>$validator->errors()], 200);
         }
+        if($request['token'] != ''){
+            $checkToken = User::where('token', $request['token'])->get();
+            if(!count($checkToken) > 0){
+                return $this->sendFailed(['tokenError' => 'Referral Code is not valide or leave the blank'], 200);
+            }
+            else{
+                $request['login_token'] = $request['token'];
+            }
+        }
 
 		try
 		{
 			\DB::beginTransaction();
+
 				$user = new User();
 				$user->fill($request->all());
 				$user->password = md5($request->password);
                 $user->role = 'client';
                 $user->status = 'active';
+                $user->loyalty_points = 0;
+                $user->token = strtoupper(substr(uniqid(), 0, 6));
 				$user->save();
 				$userId =$user->id;
 				$otp = rand(1111,9999);
@@ -73,7 +85,7 @@ class CustomerController extends BaseController
 					'id'       => $userId,
 					'otp'			=> $otp,
 				);
-				\Mail::to($request->email)->send(new \App\Mail\NewUserMail($details));
+				\Mail::to($request->email)->send(new \App\Mail\OTPMail($details));
 
 			\DB::commit();
 			return $this->sendSuccess(['id' => $userId, 'otp' => $otp, 'email' => $request->email ], 'OTP sent on your mobile number');
